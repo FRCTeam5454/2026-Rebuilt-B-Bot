@@ -8,12 +8,14 @@ import frc.robot.Constants.OperatorConstants;
 
 import frc.robot.commands.RobotDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.DriveSubsystemPWM;
 import frc.robot.subsystems.ExampleSubsystem;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -30,7 +32,7 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final DriveSubsystem m_drive = new DriveSubsystem();
+  private final DriveSubsystemPWM m_drive = new DriveSubsystemPWM();
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -60,7 +62,7 @@ public class RobotContainer {
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
   public void driveRobot() {
-    m_drive.driveRobot(-m_driverController.getLeftY(), -m_driverController.getRightY());
+    m_drive.tankDrive(-m_driverController.getLeftY(), -m_driverController.getRightY());
   }
 
   /**
@@ -70,8 +72,36 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new Command() {
-      
-    };
+     return Commands.sequence(      
+      Commands.run(() -> m_drive.tankDrive(0.4, 0.4), m_drive)
+        .until(() -> m_drive.isLimitPressed()),
+
+      Commands.runOnce(() -> m_drive.tankDrive(0.0, 0.0), m_drive)
+        /*Commands.run(() -> m_drive.tankDrive(0.5, 0.5), m_drive)
+            .withTimeout(2.0),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, -0.5), m_drive)
+            .withTimeout(0.9),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, 0.5), m_drive)
+            .withTimeout(2.0),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, -0.5), m_drive)
+            .withTimeout(0.7),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, 0.5), m_drive)
+            .withTimeout(2.0),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, -0.5), m_drive)
+            .withTimeout(0.75),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, 0.5), m_drive)
+            .withTimeout(2.0),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, -0.5), m_drive)
+            .withTimeout(0.7),
+
+        Commands.runOnce(() -> m_drive.tankDrive(0.0, 0.0), m_drive)*/
+    );
   }
 }

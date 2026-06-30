@@ -3,8 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -12,22 +12,23 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 
 
-public class DriveSubsystem extends SubsystemBase {
-  private final WPI_VictorSPX m_leftLeader = new WPI_VictorSPX(Constants.kLeftMotor1Port);
-  private final WPI_VictorSPX m_leftFollower = new WPI_VictorSPX(Constants.kLeftMotor2Port);
-  private final WPI_VictorSPX m_rightLeader = new WPI_VictorSPX(Constants.kRightMotor1Port);
-  private final WPI_VictorSPX m_rightFollower = new WPI_VictorSPX(Constants.kRightMotor2Port);
+public class DriveSubsystemPWM extends SubsystemBase {
+  private final VictorSP m_leftLeader = new VictorSP(2);
+  private final VictorSP m_leftFollower = new VictorSP(3);
+  private final VictorSP m_rightLeader = new VictorSP(0);
+  private final VictorSP m_rightFollower = new VictorSP(1);
   private final DigitalInput m_limitSwitch = new DigitalInput(0);
   private final DifferentialDrive m_drive;
   
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem() {
+  public DriveSubsystemPWM() {
     // The motors on the left side of the drive.
-    m_leftFollower.follow(m_leftLeader);
-    m_rightFollower.follow(m_rightLeader);
+    m_leftLeader.addFollower(m_leftFollower);
+    m_rightLeader.addFollower(m_rightFollower);
+    
   // The motors on the right side of the drive.
     m_rightLeader.setInverted(true);
-    m_rightFollower.setInverted(true);
+    m_rightFollower.setInverted(false);
     m_drive = new DifferentialDrive(m_leftLeader, m_rightLeader);
   }
 

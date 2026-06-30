@@ -30,13 +30,13 @@ public class RobotDriveCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.driveRobot(0.5, 0.5); // Example: drive forward at half speed
+    m_subsystem.tankDrive(0.5, 0.5); // Example: drive forward at half speed
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.driveRobot(0, 0); // Example: stop the robot
+    m_subsystem.tankDrive(0, 0); // Example: stop the robot
   }
 
   // Returns true when the command should end.

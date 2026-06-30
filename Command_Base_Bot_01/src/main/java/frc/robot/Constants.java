@@ -13,10 +13,10 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final int kLeftMotor1Port  = 10;
-  public static final int kLeftMotor2Port  = 11;
-  public static final int kRightMotor1Port = 12;
-  public static final int kRightMotor2Port = 13;
+  public static final int kLeftMotor1Port  = 0;
+  public static final int kLeftMotor2Port  = 1;
+  public static final int kRightMotor1Port = 2;
+  public static final int kRightMotor2Port = 3;
 
   private Constants() {}
   public static class OperatorConstants {
