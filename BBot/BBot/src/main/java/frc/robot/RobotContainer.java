@@ -9,11 +9,8 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.ExampleSubsystem;
-<<<<<<< HEAD
 import frc.robot.subsystems.ShootingSubsystem;
-=======
 import frc.robot.subsystems.IntakeSubsystem;
->>>>>>> 30d42434acea7e3b420d225d3cdb2a471313262b
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -27,13 +24,8 @@ import frc.robot.commands.IntakeCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-<<<<<<< HEAD
   private final ShootingSubsystem m_shootingSubsystem = new ShootingSubsystem();
-
-=======
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final IntakeSubsystem m_Intake = new IntakeSubsystem();
->>>>>>> 30d42434acea7e3b420d225d3cdb2a471313262b
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -54,9 +46,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-<<<<<<< HEAD
     Command shootCommand = new ShooterCommand(m_shootingSubsystem, Constants.ShooterConstants.ShooterSpeed);
-=======
+    m_driverController.rightTrigger().whileTrue(shootCommand);
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
    Command highIntake =new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeHighSpeed);
    m_driverController.a().whileTrue(highIntake);
@@ -66,7 +57,6 @@ public class RobotContainer {
 
    Command outIntake =new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeOutSpeed);
    m_driverController.x().whileTrue(outIntake);
->>>>>>> 30d42434acea7e3b420d225d3cdb2a471313262b
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
