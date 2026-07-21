@@ -34,6 +34,13 @@ public final class Constants {
   }
     public static final Matrix<N3, N1> kPoseEstimatorStandardDeviations = VecBuilder.fill(0.1, 0.1, 10);
     public static final Matrix<N3, N1> kVisionStandardDeviations = VecBuilder.fill(5, 5, 500);
+
+  public static final class IntakeConstants {
+    public static final int IntakeMotorPort = 10;
+    public static final double kIntakeHighSpeed=1.0;
+    public static final double kIntakeLowSpeed=0.5;
+    public static final double kIntakeOutSpeed=-1.0;
+  }
      
   public static final class DriveConstants{
     // Joystick axis deadband for the swerve drive

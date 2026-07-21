@@ -4,18 +4,32 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.utilities.ObsidianCANSparkMax;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
-  public IntakeSubsystem() {}
-
+  private final ObsidianCANSparkMax m_intakeMotor = new ObsidianCANSparkMax(0, MotorType.kBrushless,true);
+  
+  public IntakeSubsystem() {
+  }
+  
   /**
    * Example command factory method.
    *
    * @return a command
    */
+
+  public void IntakeMotorSpeed(double speed) {
+    m_intakeMotor.set(speed);
+  } 
+  public void IntakeMotorStop() {
+    m_intakeMotor.set(0);
+  }
   public Command exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
