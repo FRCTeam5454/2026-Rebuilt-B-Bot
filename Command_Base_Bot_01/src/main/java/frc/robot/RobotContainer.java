@@ -5,19 +5,21 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ShooterCommand;
+
+import frc.robot.commands.RobotDriveCommand;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.DriveSubsystemPWM;
 import frc.robot.subsystems.ExampleSubsystem;
-<<<<<<< HEAD
-import frc.robot.subsystems.ShootingSubsystem;
-=======
-import frc.robot.subsystems.IntakeSubsystem;
->>>>>>> 30d42434acea7e3b420d225d3cdb2a471313262b
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.IntakeCommand;
+
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,23 +28,23 @@ import frc.robot.commands.IntakeCommand;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-<<<<<<< HEAD
-  private final ShootingSubsystem m_shootingSubsystem = new ShootingSubsystem();
+  
 
-=======
+  // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final IntakeSubsystem m_Intake = new IntakeSubsystem();
->>>>>>> 30d42434acea7e3b420d225d3cdb2a471313262b
+  private final DriveSubsystemPWM m_drive = new DriveSubsystemPWM();
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-  }
+  
+  // Configure the trigger bindings
+  configureBindings();
+}
+
+
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -54,23 +56,13 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-<<<<<<< HEAD
-    Command shootCommand = new ShooterCommand(m_shootingSubsystem, Constants.ShooterConstants.ShooterSpeed);
-=======
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-   Command highIntake =new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeHighSpeed);
-   m_driverController.a().whileTrue(highIntake);
-
-   Command lowIntake =new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeLowSpeed);
-   m_driverController.b().whileTrue(lowIntake);
-
-   Command outIntake =new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeOutSpeed);
-   m_driverController.x().whileTrue(outIntake);
->>>>>>> 30d42434acea7e3b420d225d3cdb2a471313262b
-
+  
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.rightTrigger().whileTrue(shootCommand);
+    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+  }
+  public void driveRobot() {
+    m_drive.tankDrive(-m_driverController.getLeftY(), -m_driverController.getRightY());
   }
 
   /**
@@ -80,6 +72,36 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+     return Commands.sequence(      
+      Commands.run(() -> m_drive.tankDrive(0.4, 0.4), m_drive)
+        .until(() -> m_drive.isLimitPressed()),
+
+      Commands.runOnce(() -> m_drive.tankDrive(0.0, 0.0), m_drive)
+        /*Commands.run(() -> m_drive.tankDrive(0.5, 0.5), m_drive)
+            .withTimeout(2.0),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, -0.5), m_drive)
+            .withTimeout(0.9),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, 0.5), m_drive)
+            .withTimeout(2.0),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, -0.5), m_drive)
+            .withTimeout(0.7),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, 0.5), m_drive)
+            .withTimeout(2.0),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, -0.5), m_drive)
+            .withTimeout(0.75),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, 0.5), m_drive)
+            .withTimeout(2.0),
+
+        Commands.run(() -> m_drive.tankDrive(0.5, -0.5), m_drive)
+            .withTimeout(0.7),
+
+        Commands.runOnce(() -> m_drive.tankDrive(0.0, 0.0), m_drive)*/
+    );
   }
 }
