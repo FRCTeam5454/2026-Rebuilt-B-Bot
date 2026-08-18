@@ -18,13 +18,13 @@ public class ShootingSubsystem extends SubsystemBase {
   
   /** Creates a new ShootingSubsystem. */
   public ShootingSubsystem() {
-    // Link the right follower to do exactly what the right leader does
+    /*// Link the right follower to do exactly what the right leader does
     m_rightFollower.follow(m_rightLeader);
     
     // Link the left follower to the right leader, but invert its direction (true) 
     // so the left and right wheels spin inward together to shoot
     m_leftFollower.follow(m_rightLeader);
-    m_leftFollower.setInverted(true);
+    m_leftFollower.setInverted(true);*/
 
   }
 

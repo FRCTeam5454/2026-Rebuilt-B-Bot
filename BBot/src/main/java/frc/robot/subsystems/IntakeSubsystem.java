@@ -19,7 +19,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
   
   public void IntakeMotorSpeed(double speed) {
-    m_intakeMotor.set(kIntakeLowSpeed);
+    m_intakeMotor.set(Constants.IntakeConstants.kIntakeLowSpeed);
   } 
   public void IntakeMotorStop() {
     m_intakeMotor.stopMotor();
