@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utilities.ObsidianCANSparkMax;
+import static frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   private final ObsidianCANSparkMax m_intakeMotor = new ObsidianCANSparkMax(0, MotorType.kBrushless,true);
@@ -18,7 +19,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
   
   public void IntakeMotorSpeed(double speed) {
-    m_intakeMotor.set(speed);
+    m_intakeMotor.set(kIntakeLowSpeed);
   } 
   public void IntakeMotorStop() {
     m_intakeMotor.stopMotor();
