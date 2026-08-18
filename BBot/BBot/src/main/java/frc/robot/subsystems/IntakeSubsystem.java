@@ -12,38 +12,22 @@ import frc.robot.Constants;
 import frc.robot.utilities.ObsidianCANSparkMax;
 
 public class IntakeSubsystem extends SubsystemBase {
-  /** Creates a new IntakeSubsystem. */
   private final ObsidianCANSparkMax m_intakeMotor = new ObsidianCANSparkMax(0, MotorType.kBrushless,true);
   
   public IntakeSubsystem() {
   }
   
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-
   public void IntakeMotorSpeed(double speed) {
     m_intakeMotor.set(speed);
   } 
   public void IntakeMotorStop() {
-    m_intakeMotor.set(0);
+    m_intakeMotor.stopMotor();
   }
   public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
-          /* one-time action goes here */
         });
   }
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
   public boolean exampleCondition() {
     // Query some boolean state, such as a digital sensor.
     return false;
