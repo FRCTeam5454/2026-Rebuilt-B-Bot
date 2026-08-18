@@ -29,8 +29,8 @@ public final class Constants {
     new PIDConstants(3.0, 0, 0.25), // Translation constants 
     new PIDConstants(25.0, 0, 1) // Rotation constants
   );
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+  public static class InputControllers {
+    public static final int kXboxDrive = 0;
   }
     public static final Matrix<N3, N1> kPoseEstimatorStandardDeviations = VecBuilder.fill(0.1, 0.1, 10);
     public static final Matrix<N3, N1> kVisionStandardDeviations = VecBuilder.fill(5, 5, 500);
