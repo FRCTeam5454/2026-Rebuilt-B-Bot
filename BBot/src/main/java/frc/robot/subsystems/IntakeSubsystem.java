@@ -13,7 +13,7 @@ import frc.robot.utilities.ObsidianCANSparkMax;
 import static frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private final ObsidianCANSparkMax m_intakeMotor = new ObsidianCANSparkMax(0, MotorType.kBrushless,true);
+  private final ObsidianCANSparkMax m_intakeMotor = new ObsidianCANSparkMax(IntakeConstants.kIntakeMotorID, MotorType.kBrushless,true);
   
   public IntakeSubsystem() {
   }
