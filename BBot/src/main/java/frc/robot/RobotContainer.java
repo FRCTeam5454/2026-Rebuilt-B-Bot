@@ -29,6 +29,7 @@ public class RobotContainer {
   private final ShootingSubsystem m_shootingSubsystem = new ShootingSubsystem();
   private final IntakeSubsystem m_Intake = new IntakeSubsystem();
   
+
   //drive...
   private final int translationAxis = XboxController.Axis.kLeftY.value;
   private final int strafeAxis = XboxController.Axis.kLeftX.value;
@@ -40,6 +41,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureBindings();
+    resetDefaultCommand();
   }
 
   private void configureBindings() {
@@ -60,5 +62,9 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return null;
+  }
+
+  private void resetDefaultCommand(){
+    m_swerve.setDefaultCommand(m_swerve.applyRequestDrive(m_xBoxDriver, translationAxis, strafeAxis, rotationAxis));
   }
 }
