@@ -12,7 +12,12 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -22,7 +27,7 @@ import frc.robot.commands.IntakeCommand;
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
+ * subsystems, comands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
@@ -36,12 +41,13 @@ public class RobotContainer {
   private final int rotationAxis = XboxController.Axis.kRightX.value;
 
   private final CommandXboxController m_xBoxDriver = new CommandXboxController(InputControllers.kXboxDrive);
-
   private final CommandSwerveDrivetrain m_swerve = TunerConstants.createDrivetrain();
+  private final SendableChooser<Command> m_autoChooser;
 
   public RobotContainer() {
     configureBindings();
     resetDefaultCommand();
+    m_autoChooser=AutoBuilder.buildAutoChooser();
   }
 
   private void configureBindings() {
@@ -68,5 +74,13 @@ public class RobotContainer {
 
   private void resetDefaultCommand(){
     m_swerve.setDefaultCommand(m_swerve.applyRequestDrive(m_xBoxDriver, translationAxis, strafeAxis, rotationAxis));
+  }
+ private void createAutonomousCommandList(){
+    try{
+      SmartDashboard.putData("Auto Chooser",m_autoChooser);
+
+    }catch(Exception e){
+      //System.out.println("Create Autos Failed, Exception: " + e.getMessage());
+    }
   }
 }
