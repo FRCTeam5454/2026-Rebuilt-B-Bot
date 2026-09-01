@@ -36,11 +36,12 @@ public final class Constants {
     public static final Matrix<N3, N1> kVisionStandardDeviations = VecBuilder.fill(5, 5, 500);
     
   public static final class ShooterConstants {
-    public static final int LowerShooterMotorPort = 1;
-    public static final int UpperShooterMotorPort = 2;
-    public static final int AnotherShooterMotorPort = 3;
-
-    public static final double ShooterSpeed = 0.5;
+    public static final int LowerShooterMotorPort = 62; // Kicker motor
+    public static final int UpperShooterMotorPort = 61; //right leader motor
+    public static final int AnotherShooterMotorPort = 21; //left follower motor
+    public static final double KickerSpeed = 0.8;
+    public static final double ShooterSpeed = 1;
+    public static final int kCurrentLimit = 50;
   }
 
   public static final class IntakeConstants {

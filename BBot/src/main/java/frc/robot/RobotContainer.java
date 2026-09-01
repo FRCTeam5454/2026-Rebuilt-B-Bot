@@ -37,7 +37,7 @@ public class RobotContainer {
 
   private final CommandXboxController m_xBoxDriver = new CommandXboxController(InputControllers.kXboxDrive);
 
-  private final CommandSwerveDrivetrain m_swerve = TunerConstants.createDrivetrain();
+  //private final CommandSwerveDrivetrain m_swerve = TunerConstants.createDrivetrain();
 
   public RobotContainer() {
     configureBindings();
@@ -45,7 +45,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    Command shootCommand = new ShooterCommand(m_shootingSubsystem, Constants.ShooterConstants.ShooterSpeed);
+    Command shootCommand = new ShooterCommand(m_shootingSubsystem, Constants.ShooterConstants.ShooterSpeed, Constants.ShooterConstants.KickerSpeed);
     m_xBoxDriver.rightTrigger().whileTrue(shootCommand);
 
    Command highIntake = new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeHighSpeed);
@@ -67,6 +67,6 @@ public class RobotContainer {
   }
 
   private void resetDefaultCommand(){
-    m_swerve.setDefaultCommand(m_swerve.applyRequestDrive(m_xBoxDriver, translationAxis, strafeAxis, rotationAxis));
+   // m_swerve.setDefaultCommand(m_swerve.applyRequestDrive(m_xBoxDriver, translationAxis, strafeAxis, rotationAxis));
   }
 }

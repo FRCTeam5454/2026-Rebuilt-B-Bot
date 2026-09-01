@@ -12,34 +12,22 @@ import frc.robot.Constants;
 import frc.robot.utilities.ObsidianCANSparkMax;
 
 public class ShootingSubsystem extends SubsystemBase {
-   final ObsidianCANSparkMax m_kicker = new ObsidianCANSparkMax(Constants.ShooterConstants.LowerShooterMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, false, 0, false);
-   final ObsidianCANSparkMax m_rightLeader = new ObsidianCANSparkMax(Constants.ShooterConstants.UpperShooterMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, false, 0, false);
-   final ObsidianCANSparkMax m_leftFollower = new ObsidianCANSparkMax(Constants.ShooterConstants.AnotherShooterMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, true, Constants.ShooterConstants.UpperShooterMotorPort, true);
+   final ObsidianCANSparkMax m_kicker = new ObsidianCANSparkMax(Constants.ShooterConstants.LowerShooterMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, Constants.ShooterConstants.kCurrentLimit);
+   final ObsidianCANSparkMax m_rightLeader = new ObsidianCANSparkMax(Constants.ShooterConstants.UpperShooterMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, Constants.ShooterConstants.kCurrentLimit);
+   final ObsidianCANSparkMax m_leftFollower = new ObsidianCANSparkMax(Constants.ShooterConstants.AnotherShooterMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, Constants.ShooterConstants.kCurrentLimit, true, Constants.ShooterConstants.UpperShooterMotorPort, true);
   
   /** Creates a new ShootingSubsystem. */
 
-  public void runShooter(double speed){
+  public void runShooter(double speed, double kickerspeed) {
     // Because the other motors are following this one, you only need to command the leader
     m_rightLeader.set(speed);
-    m_kicker.set(0.5);
+    m_kicker.set(kickerspeed);
   }
 
   public void stopShooter(){
     // Stopping the leader automatically stops the followers
-    m_rightLeader.set(0);
+    m_rightLeader.stopMotor();
+    m_kicker.stopMotor();
     
-  }
-  
-
-  @Override
-  public void periodic() {
- // m_rightFollower.set(m_rightLeader.get()); 
-
-    // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
   }
 }

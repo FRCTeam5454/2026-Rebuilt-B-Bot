@@ -47,12 +47,12 @@ public class ObsidianCANSparkMax extends SparkBase{
         System.out.println(e.toString());
         }
     }
-public ObsidianCANSparkMax(int canID,MotorType motorType,boolean breakMode,boolean follow,int followMotor,boolean invertMotor){
+public ObsidianCANSparkMax(int canID,MotorType motorType,boolean breakMode,int currentLimit, boolean follow,int followMotor,boolean invertMotor){
         super(canID,motorType,SparkModel.SparkMax);
         try{
             SparkBaseConfig newConfig =new SparkMaxConfig();
             newConfig.inverted(false);
-            newConfig.smartCurrentLimit(kDefaultAmpLimit);
+            newConfig.smartCurrentLimit(currentLimit);
             newConfig.signals.motorTemperaturePeriodMs(1000);
             newConfig.signals.busVoltagePeriodMs(1000);
             newConfig.signals.analogPositionPeriodMs(1000);
@@ -69,7 +69,7 @@ public ObsidianCANSparkMax(int canID,MotorType motorType,boolean breakMode,boole
                 if(breakMode){
                 newConfig.idleMode(IdleMode.kBrake);
             } else{
-                newConfig.idleMode(IdleMode.kBrake);
+                newConfig.idleMode(IdleMode.kCoast);
             }
             Timer.delay(0.5);   // delay due to rev bug on CAN bus when burning Flash 
             configure(newConfig,SparkBase.ResetMode.kResetSafeParameters,SparkBase.PersistMode.kNoPersistParameters);
