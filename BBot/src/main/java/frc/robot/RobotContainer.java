@@ -12,8 +12,24 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.wpilibj.XboxController;
+import java.util.List;
+
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
@@ -22,9 +38,11 @@ import frc.robot.commands.IntakeCommand;
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
+ * subsystems, comands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private final Field2d m_Field2d = new Field2d();
+
   // The robot's subsystems and commands are defined here...
   private final ShootingSubsystem m_shootingSubsystem = new ShootingSubsystem();
   private final IntakeSubsystem m_Intake = new IntakeSubsystem();
@@ -38,10 +56,32 @@ public class RobotContainer {
   private final CommandXboxController m_xBoxDriver = new CommandXboxController(InputControllers.kXboxDrive);
 
   //private final CommandSwerveDrivetrain m_swerve = TunerConstants.createDrivetrain();
+  private final CommandSwerveDrivetrain m_swerve = TunerConstants.createDrivetrain();
+  private final SendableChooser<Command> m_autoChooser;
+
+  private void InitialAutonPathfind(){
+    //Magic Comment
+    if (m_autoChooser == null) {
+      SmartDashboard.putString("Asher's Cool Message:", "No Auto Selected");
+     // Don't Run anything
+    }
+    else {
+        // Prefer the pre-built Command selected in the auto chooser
+        Command selectedAuto = m_autoChooser.getSelected();
+          Command followAuto = new PathPlannerAuto(selectedAuto.getName());
+
+          // go to start pos then call auto
+          SmartDashboard.putString("Asher's Cool Message:","should be running sequence");
+          //add auto to scheduler
+          Pose2d currentPose = m_swerve.getPose2d();
+          CommandScheduler.getInstance().schedule(Commands.sequence(followAuto));       
+    }
+  }
 
   public RobotContainer() {
     configureBindings();
     resetDefaultCommand();
+    m_autoChooser=AutoBuilder.buildAutoChooser();
   }
 
   private void configureBindings() {
@@ -68,5 +108,14 @@ public class RobotContainer {
 
   private void resetDefaultCommand(){
    // m_swerve.setDefaultCommand(m_swerve.applyRequestDrive(m_xBoxDriver, translationAxis, strafeAxis, rotationAxis));
+  }
+
+ private void createAutonomousCommandList(){
+    try{
+      SmartDashboard.putData("Auto Chooser",m_autoChooser);
+
+    }catch(Exception e){
+      //System.out.println("Create Autos Failed, Exception: " + e.getMessage());
+    }
   }
 }
