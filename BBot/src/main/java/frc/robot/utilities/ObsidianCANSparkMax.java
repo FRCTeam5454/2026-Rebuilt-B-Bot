@@ -5,6 +5,7 @@ import frc.robot.Constants;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -46,7 +47,39 @@ public class ObsidianCANSparkMax extends SparkBase{
         System.out.println(e.toString());
         }
     }
-
+public ObsidianCANSparkMax(int canID,MotorType motorType,boolean breakMode,boolean follow,int followMotor,boolean invertMotor){
+        super(canID,motorType,SparkModel.SparkMax);
+        try{
+            SparkBaseConfig newConfig =new SparkMaxConfig();
+            newConfig.inverted(false);
+            newConfig.smartCurrentLimit(kDefaultAmpLimit);
+            newConfig.signals.motorTemperaturePeriodMs(1000);
+            newConfig.signals.busVoltagePeriodMs(1000);
+            newConfig.signals.analogPositionPeriodMs(1000);
+            newConfig.signals.analogVelocityPeriodMs(1000);
+            newConfig.signals.analogVoltagePeriodMs(1000);
+            newConfig.signals.outputCurrentPeriodMs(1000);
+            newConfig.signals.externalOrAltEncoderPosition(1000);
+            newConfig.signals.externalOrAltEncoderVelocity(1000);
+            if(follow){
+                newConfig.follow(followMotor,invertMotor);
+            } else {
+                newConfig.disableFollowerMode();
+            }
+                if(breakMode){
+                newConfig.idleMode(IdleMode.kBrake);
+            } else{
+                newConfig.idleMode(IdleMode.kBrake);
+            }
+            Timer.delay(0.5);   // delay due to rev bug on CAN bus when burning Flash 
+            configure(newConfig,SparkBase.ResetMode.kResetSafeParameters,SparkBase.PersistMode.kNoPersistParameters);
+            Timer.delay(0.5);   // delay due to rev bug on CAN bus when burning Flash 
+        }
+    catch (Exception e){
+        System.out.println("Exception in Creating CAN ID :" +  canID);
+        System.out.println(e.toString());
+        }
+    }
     /**
      * <p> 5454 CANSparkMaxWrapper
      * <p> Will set all Periodic Status 3-6 to 1000 ms
@@ -300,4 +333,5 @@ public class ObsidianCANSparkMax extends SparkBase{
         Timer.delay(0.5);   // delay due to rev bug on CAN bus when burning Flash 
 
     }
+
 }

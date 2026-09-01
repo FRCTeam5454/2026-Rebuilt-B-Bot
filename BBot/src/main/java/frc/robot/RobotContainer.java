@@ -57,6 +57,8 @@ public class RobotContainer {
    Command outIntake = new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeOutSpeed);
    m_xBoxDriver.x().whileTrue(outIntake);
 
+   Command runShooter = new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeOutSpeed);
+   m_xBoxDriver.y().whileTrue(runShooter);
   }
 
 

@@ -18,29 +18,10 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
   }
   
-  public void IntakeMotorSpeed(double speed) {
-    m_intakeMotor.set(Constants.IntakeConstants.kIntakeLowSpeed);
-  } 
+  public void RunIntake(double speed) {
+    m_intakeMotor.set(speed);
+  }
   public void IntakeMotorStop() {
     m_intakeMotor.stopMotor();
-  }
-  public Command exampleMethodCommand() {
-    return runOnce(
-        () -> {
-        });
-  }
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
   }
 }
