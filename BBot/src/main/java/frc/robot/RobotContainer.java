@@ -59,8 +59,9 @@ public class RobotContainer {
 
   private final CommandXboxController m_xBoxDriver = new CommandXboxController(InputControllers.kXboxDrive);
 
-  //private final CommandSwerveDrivetrain m_swerve = TunerConstants.createDrivetrain();
   private final CommandSwerveDrivetrain m_swerve = TunerConstants.createDrivetrain();
+
+  private final SendableChooser<String> m_pathChooser = new SendableChooser<>();
   private final SendableChooser<Command> m_autoChooser;
 
   private void InitialAutonPathfind(){
@@ -95,14 +96,8 @@ public class RobotContainer {
    Command highIntake = new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeHighSpeed);
    m_xBoxDriver.a().whileTrue(highIntake);
 
-   Command lowIntake = new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeLowSpeed);
-   m_xBoxDriver.b().whileTrue(lowIntake);
-
    Command outIntake = new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeOutSpeed);
    m_xBoxDriver.x().whileTrue(outIntake);
-
-   Command runShooter = new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeOutSpeed);
-   m_xBoxDriver.y().whileTrue(runShooter);
   }
 
 
