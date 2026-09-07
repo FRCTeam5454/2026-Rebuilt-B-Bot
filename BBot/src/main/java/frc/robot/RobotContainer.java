@@ -12,6 +12,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.CandleSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -46,6 +47,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ShootingSubsystem m_shootingSubsystem = new ShootingSubsystem();
   private final IntakeSubsystem m_Intake = new IntakeSubsystem();
+  // CANdle LEDs. Its periodic() drives color from robot state: purple Larson while
+  // disabled, solid purple in auto, alliance color in teleop.
+  private final CandleSubsystem m_candle = new CandleSubsystem(Constants.LEDConstants.kCandleId);
   
 
   //drive...

@@ -55,6 +55,19 @@ public final class Constants {
     public static final double ShooterRPMTolerance = 150.0;
   }
 
+  public static final class LEDConstants {
+    /** CAN id of the CTRE CANdle LED controller. */
+    public static final int kCandleId = 30;
+    /**
+     * Total number of LEDs to drive. Indices 0-7 are the CANdle's on-board LEDs;
+     * 8 and up are an attached strip. Bump this to 8 + (strip length) once a
+     * strip is wired in.
+     */
+    public static final int kLedCount = 8;
+    /** Global brightness scalar applied to the CANdle, 0.0 - 1.0. */
+    public static final double kBrightness = 1.0;
+  }
+
   public static final class IntakeConstants {
     public static final int kIntakeMotorID = 14;
     public static final double kIntakeHighSpeed=1.0;
