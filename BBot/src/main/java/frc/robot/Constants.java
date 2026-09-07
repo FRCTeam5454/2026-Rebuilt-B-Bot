@@ -42,6 +42,17 @@ public final class Constants {
     public static final double KickerSpeed = 0.8;
     public static final double ShooterSpeed = 1;
     public static final int kCurrentLimit = 50;
+
+    // Closed-loop flywheel velocity control. Gains run on the SPARK MAX's
+    // on-board 1 kHz loop and act on the leader's built-in NEO encoder (RPM).
+    // These are starting points - tune kFF first (output with zero P/I/D),
+    // then bump kP until it holds under load.
+    public static final double kShooterP = 0.00020;
+    public static final double kShooterI = 0.0;
+    public static final double kShooterD = 0.0;
+    public static final double kShooterFF = 0.00017; // ~ 1 / NEO free speed (RPM)
+    public static final double ShooterTargetRPM = 4500.0;
+    public static final double ShooterRPMTolerance = 150.0;
   }
 
   public static final class IntakeConstants {

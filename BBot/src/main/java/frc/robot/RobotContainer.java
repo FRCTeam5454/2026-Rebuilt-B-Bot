@@ -85,7 +85,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    Command shootCommand = new ShooterCommand(m_shootingSubsystem, Constants.ShooterConstants.ShooterSpeed, Constants.ShooterConstants.KickerSpeed);
+    Command shootCommand = new ShooterCommand(m_shootingSubsystem, Constants.ShooterConstants.ShooterTargetRPM, Constants.ShooterConstants.KickerSpeed);
     m_xBoxDriver.rightTrigger().whileTrue(shootCommand);
 
    Command highIntake = new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeHighSpeed);
