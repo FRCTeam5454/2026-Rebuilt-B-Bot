@@ -18,7 +18,7 @@ public class IntakeCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public IntakeCommand(IntakeSubsystem subsystem,double speed){
+  public IntakeCommand(IntakeSubsystem subsystem, double speed){
     m_subsystem = subsystem;
     m_speed=speed;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,12 +32,12 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-       m_subsystem.RunIntake(m_speed);
+       m_subsystem.runIntake(m_speed);
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.IntakeMotorStop();
+    m_subsystem.intakeMotorStop();
   }
 
   // Returns true when the command should end.
