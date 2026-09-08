@@ -50,7 +50,7 @@ public class RobotContainer {
   private final IntakeSubsystem m_Intake = new IntakeSubsystem();
   // CANdle LEDs. Its periodic() drives color from robot state: purple Larson while
   // disabled, solid purple in auto, alliance color in teleop.
-  private final CandleSubsystem m_candle = new CandleSubsystem(Constants.LEDConstants.kCandleId,kCanivoreBus);
+  private final CandleSubsystem m_candle = new CandleSubsystem(Constants.LEDConstants.kCandleId,Constants.kCanivoreBus);
   
 
   //drive...

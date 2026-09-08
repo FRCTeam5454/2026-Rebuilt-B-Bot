@@ -40,7 +40,7 @@ public class ShooterCommand extends Command {
   @Override
   public void execute() {
     double kicker = m_subsystem.isAtTargetRPM() ? m_kickerspeed : 0.0;
-    System.out.println("Shooter Speed- " + m_subsystem.getShooterRPM() + "  Target RPM:" + m_rpm);
+    System.out.println("Kicker Speeed" + kicker+ " Shooter Speed- " + m_subsystem.getShooterRPM() + "  Target RPM:" + m_rpm);
     m_subsystem.runShooterRPM(m_rpm, kicker);
   }
 
