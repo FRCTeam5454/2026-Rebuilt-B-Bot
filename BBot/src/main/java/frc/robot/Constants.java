@@ -25,6 +25,7 @@ import com.pathplanner.lib.config.PIDConstants;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final String kCanivoreBus = "5454Canivore";
   public static final PPHolonomicDriveController pathPlanDriveController = new PPHolonomicDriveController(
     new PIDConstants(3.0, 0, 0.25), // Translation constants 
     new PIDConstants(25.0, 0, 1) // Rotation constants
@@ -36,9 +37,9 @@ public final class Constants {
     public static final Matrix<N3, N1> kVisionStandardDeviations = VecBuilder.fill(5, 5, 500);
     
   public static final class ShooterConstants {
-    public static final int LowerShooterMotorPort = 62; // Kicker motor
-    public static final int UpperShooterMotorPort = 61; //right leader motor
-    public static final int AnotherShooterMotorPort = 21; //left follower motor
+    public static final int ShooterFollowerMotorPort = 21;
+    public static final int ShooterLeaderMotorPort = 61; 
+    public static final int KickerMotorPort = 62; 
     public static final double KickerSpeed = 0.8;
     public static final double ShooterSpeed = 1;
     public static final int kCurrentLimit = 50;
@@ -47,17 +48,17 @@ public final class Constants {
     // on-board 1 kHz loop and act on the leader's built-in NEO encoder (RPM).
     // These are starting points - tune kFF first (output with zero P/I/D),
     // then bump kP until it holds under load.
-    public static final double kShooterP = 0.00020;
+    public static final double kShooterP = 0.001;
     public static final double kShooterI = 0.0;
     public static final double kShooterD = 0.0;
-    public static final double kShooterFF = 0.00017; // ~ 1 / NEO free speed (RPM)
+    public static final double kShooterFF = 0.01; // ~ 1 / NEO free speed (RPM)
     public static final double ShooterTargetRPM = 4500.0;
     public static final double ShooterRPMTolerance = 150.0;
   }
 
   public static final class LEDConstants {
     /** CAN id of the CTRE CANdle LED controller. */
-    public static final int kCandleId = 30;
+    public static final int kCandleId = 55;
     /**
      * Total number of LEDs to drive. Indices 0-7 are the CANdle's on-board LEDs;
      * 8 and up are an attached strip. Bump this to 8 + (strip length) once a

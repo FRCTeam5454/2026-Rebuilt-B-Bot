@@ -110,9 +110,9 @@ public class CandleSubsystem extends SubsystemBase {
   private boolean m_autoStateEnabled = true;
   private LedMode m_appliedMode = null;
 
-  public CandleSubsystem(int candleID) {
+  public CandleSubsystem(int candleID,String canBus) {
    
-    m_candle = new CANdle(candleID);
+    m_candle = new CANdle(candleID,canBus);
    
     CANdleConfiguration config = new CANdleConfiguration();
     config.LED.StripType = StripTypeValue.GRB; // change to match your LED strip wiring

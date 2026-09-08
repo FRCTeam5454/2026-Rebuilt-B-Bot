@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
@@ -49,7 +50,7 @@ public class RobotContainer {
   private final IntakeSubsystem m_Intake = new IntakeSubsystem();
   // CANdle LEDs. Its periodic() drives color from robot state: purple Larson while
   // disabled, solid purple in auto, alliance color in teleop.
-  private final CandleSubsystem m_candle = new CandleSubsystem(Constants.LEDConstants.kCandleId);
+  private final CandleSubsystem m_candle = new CandleSubsystem(Constants.LEDConstants.kCandleId,kCanivoreBus);
   
 
   //drive...
@@ -85,7 +86,8 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
     resetDefaultCommand();
-    m_autoChooser=AutoBuilder.buildAutoChooser();
+    m_autoChooser=null;
+   //m_autoChooser=AutoBuilder.buildAutoChooser();
   }
 
   private void configureBindings() {
@@ -111,7 +113,7 @@ public class RobotContainer {
   }
 
   private void resetDefaultCommand(){
-   // m_swerve.setDefaultCommand(m_swerve.applyRequestDrive(m_xBoxDriver, translationAxis, strafeAxis, rotationAxis));
+  //  m_swerve.setDefaultCommand(m_swerve.applyRequestDrive(m_xBoxDriver, translationAxis, strafeAxis, rotationAxis));
   }
 
  private void createAutonomousCommandList(){

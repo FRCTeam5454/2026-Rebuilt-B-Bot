@@ -19,9 +19,9 @@ import frc.robot.Constants;
 import frc.robot.utilities.ObsidianCANSparkMax;
 
 public class ShootingSubsystem extends SubsystemBase {
-   final ObsidianCANSparkMax m_kicker = new ObsidianCANSparkMax(Constants.ShooterConstants.LowerShooterMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, Constants.ShooterConstants.kCurrentLimit);
-   final ObsidianCANSparkMax m_rightLeader = new ObsidianCANSparkMax(Constants.ShooterConstants.UpperShooterMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, Constants.ShooterConstants.kCurrentLimit);
-   final ObsidianCANSparkMax m_leftFollower = new ObsidianCANSparkMax(Constants.ShooterConstants.AnotherShooterMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, Constants.ShooterConstants.kCurrentLimit, true, Constants.ShooterConstants.UpperShooterMotorPort, true);
+   final ObsidianCANSparkMax m_kicker = new ObsidianCANSparkMax(Constants.ShooterConstants.KickerMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, Constants.ShooterConstants.kCurrentLimit);
+   final ObsidianCANSparkMax m_rightLeader = new ObsidianCANSparkMax(Constants.ShooterConstants.ShooterLeaderMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, Constants.ShooterConstants.kCurrentLimit);
+   final ObsidianCANSparkMax m_leftFollower = new ObsidianCANSparkMax(Constants.ShooterConstants.ShooterFollowerMotorPort, ObsidianCANSparkMax.MotorType.kBrushless, false, Constants.ShooterConstants.kCurrentLimit, true, Constants.ShooterConstants.ShooterLeaderMotorPort, true);
 
   // Closed-loop velocity control lives on the leader; the follower mirrors its
   // output, so commanding the leader spins both flywheel motors.
