@@ -16,6 +16,8 @@ import frc.robot.subsystems.CandleSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class RobotContainer {
   private final CandleSubsystem m_candle = new CandleSubsystem(Constants.LEDConstants.kCandleId,Constants.kCanivoreBus);
   
 
-  //drive...
+  //drive
   private final int translationAxis = XboxController.Axis.kLeftY.value;
   private final int strafeAxis = XboxController.Axis.kLeftX.value;
   private final int rotationAxis = XboxController.Axis.kRightX.value;
@@ -62,33 +64,35 @@ public class RobotContainer {
 
   private final CommandSwerveDrivetrain m_swerve = TunerConstants.createDrivetrain();
 
+  //Setting up auto choosing and then...
   private final SendableChooser<String> m_pathChooser = new SendableChooser<>();
   private final SendableChooser<Command> m_autoChooser;
 
-  private void InitialAutonPathfind(){
+  // ...Scheduling
+  private void InitialAuton() {
     //Magic Comment
-    if (m_autoChooser == null) {
-      SmartDashboard.putString("Asher's Cool Message:", "No Auto Selected");
-     // Don't Run anything
-    }
-    else {
-        // Prefer the pre-built Command selected in the auto chooser
-        Command selectedAuto = m_autoChooser.getSelected();
+    try {
+      if (m_autoChooser == null) {
+        SmartDashboard.putString("Asher's Cool Message:", "No Auto Selected");
+      // Don't run anything if nothing's there
+      }
+      else {
+          Command selectedAuto = m_autoChooser.getSelected();
           Command followAuto = new PathPlannerAuto(selectedAuto.getName());
-
-          // go to start pos then call auto
-          SmartDashboard.putString("Asher's Cool Message:","should be running sequence");
           //add auto to scheduler
-          Pose2d currentPose = m_swerve.getPose2d();
           CommandScheduler.getInstance().schedule(Commands.sequence(followAuto));       
+      }
+    } catch (Exception e) {
+        SmartDashboard.putString("Asher's Cool Message:",e.getMessage());
     }
   }
 
   public RobotContainer() {
-    configureBindings();
-    resetDefaultCommand();
-    m_autoChooser=null;
-   //m_autoChooser=AutoBuilder.buildAutoChooser();
+      configureBindings();
+      resetDefaultCommand();
+      configureNamedCommands();
+      m_autoChooser=AutoBuilder.buildAutoChooser();
+      createAutonomousCommandList();
   }
 
   private void configureBindings() {
@@ -102,21 +106,50 @@ public class RobotContainer {
    m_xBoxDriver.x().whileTrue(outIntake);
   }
 
-
-  public Command getAutonomousCommand() {
-    return null;
+  public void configureNamedCommands() {
+    //Auto Commands (AKA the stuff that robot should do on its own other than driving)
   }
 
-  private void resetDefaultCommand(){
-  //  m_swerve.setDefaultCommand(m_swerve.applyRequestDrive(m_xBoxDriver, translationAxis, strafeAxis, rotationAxis));
+  private void refreshSmartDashboard(){
+    //Outputting general things we want to see on the SmartDashboard, try to make this the over-arching important stuff
+    try{
+    }catch(Exception e){}
   }
 
- private void createAutonomousCommandList(){
+  private void createAutonomousCommandList(){
     try{
       SmartDashboard.putData("Auto Chooser",m_autoChooser);
 
     }catch(Exception e){
-      //System.out.println("Create Autos Failed, Exception: " + e.getMessage());
+      SmartDashboard.putString("Asher's Cool Message:",e.getMessage());
     }
+  }
+
+  public void setLimelightThrottles(int time){
+  }
+
+  public void DisabledInit(){
+  }
+
+  public void DisabledPeriodic(){
+  }
+
+  public void AutoPeriodic(){
+  }
+
+  public void AutonMode(){
+  }
+
+  public void TeleopMode(){
+  }
+
+  public void TeleopPeriodic(){
+  }
+
+  public void AllPeriodic(){    
+  }
+
+  private void resetDefaultCommand(){
+    m_swerve.setDefaultCommand(m_swerve.applyRequestDrive(m_xBoxDriver, translationAxis, strafeAxis, rotationAxis));
   }
 }
