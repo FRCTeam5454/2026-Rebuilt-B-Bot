@@ -91,8 +91,8 @@ public class RobotContainer {
       configureBindings();
       resetDefaultCommand();
       configureNamedCommands();
-      m_autoChooser=AutoBuilder.buildAutoChooser();
       createAutonomousCommandList();
+      m_autoChooser=AutoBuilder.buildAutoChooser();
   }
 
   private void configureBindings() {
