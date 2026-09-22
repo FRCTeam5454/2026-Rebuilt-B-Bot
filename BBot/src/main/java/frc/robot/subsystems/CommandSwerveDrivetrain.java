@@ -155,8 +155,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         buildPoseEstimator();
-        //TODO: Fix PathPla
-        // configAutoBuilder();
+        configAutoBuilder();
     }
 
     /**
