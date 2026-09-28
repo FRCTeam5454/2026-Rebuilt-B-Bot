@@ -51,9 +51,9 @@ public final class Constants {
     public static final double kShooterP = 0.001;
     public static final double kShooterI = 0.0;
     public static final double kShooterD = 0.0;
-    public static final double kShooterFF = 0.01; // ~ 1 / NEO free speed (RPM)
+    public static final double kShooterFF = 0.0000; // ~ 1 / NEO free speed (RPM)
     public static final double ShooterTargetRPM = 4500.0;
-    public static final double ShooterRPMTolerance = 150.0;
+    public static final double ShooterRPMTolerance = 500.0; // should be 150
   }
 
   public static final class LEDConstants {

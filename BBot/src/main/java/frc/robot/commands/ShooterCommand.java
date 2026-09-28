@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class ShooterCommand extends Command {
   @SuppressWarnings("PMD.UnusedPrivateField")
   private final ShootingSubsystem m_subsystem;
-  private final double m_rpm;
-  private final double m_kickerspeed;
+  private double m_rpm;
+  private double m_oldrpm=0;
+  private double m_oldkickerspeed=0;
+  private double m_kickerspeed;
 
   /**
    * Creates a new ShooterCommand.
@@ -41,7 +43,11 @@ public class ShooterCommand extends Command {
   public void execute() {
     double kicker = m_subsystem.isAtTargetRPM() ? m_kickerspeed : 0.0;
     System.out.println("Kicker Speeed" + kicker+ " Shooter Speed- " + m_subsystem.getShooterRPM() + "  Target RPM:" + m_rpm);
-    m_subsystem.runShooterRPM(m_rpm, kicker);
+    if((m_rpm!=m_oldrpm) || (m_kickerspeed!=m_oldkickerspeed)) {
+      m_subsystem.runShooterRPM(m_rpm, kicker);
+    }
+    m_oldrpm=m_rpm;
+    m_oldkickerspeed=kicker;
   }
 
   // Called once the command ends or is interrupted.
