@@ -29,6 +29,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -154,8 +155,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         buildPoseEstimator();
-        //TODO: Fix PathPla
-        // configAutoBuilder();
+        configAutoBuilder();
     }
 
     /**
@@ -297,16 +297,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public boolean checkCANConnections(){
         boolean returnValue=true;
-        try{
-            for(int i=0;i<this.getModules().length;i++){
-                this.getModule(i).getDriveMotor();
-                this.getModule(i).getSteerMotor();
-                this.getModule(i).getEncoder();
-            }
-        }catch(Exception e){
-            returnValue=false;
+        for (int i = 0; i < this.getModules().length; i++) {
+            var module = this.getModule(i);
+            boolean connected = module.getDriveMotor().isConnected()
+                && module.getSteerMotor().isConnected()
+                && module.getEncoder().isConnected();
+            Logger.recordOutput("SwerveDriveTrain/Module" + i + "/Connected", connected);
+            returnValue &= connected;
         }
-
         return returnValue;
     }
 
@@ -347,14 +345,19 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      * @return Command to run
      */
     public Command applyRequestDrive(CommandXboxController driveController,int translationAxis,int strafeAxis,int rotationAxis) {
-        SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDeadband((TunerConstants.kMaxSpeed*0.1))
-            .withRotationalDeadband((TunerConstants.kMaxAngularSpeed*0.1));
+        SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+            .withDeadband(TunerConstants.kMaxSpeed * Constants.DriveConstants.swerveDeadband)
+            .withRotationalDeadband(TunerConstants.kMaxAngularSpeed * Constants.DriveConstants.swerveRotateDeadband);
 
-        ////System.out.println("VELOCITY X SPEED: "+(-driveController.getRawAxis(translationAxis)*TunerConstants.kMaxSpeed)*m_gasPedalMult);
-            
-        return this.applyRequest(() -> drive.withVelocityX((-driveController.getRawAxis(translationAxis)*TunerConstants.kMaxSpeed)*m_gasPedalDriveMult)
-            .withVelocityY((-driveController.getRawAxis(strafeAxis)*TunerConstants.kMaxSpeed)*m_gasPedalDriveMult)
-            .withRotationalRate((-driveController.getRawAxis(rotationAxis)*TunerConstants.kMaxAngularSpeed)*m_gasPedalRotMult)
+        return this.applyRequest(() -> drive.withVelocityX((-MathUtil.applyDeadband(
+                driveController.getRawAxis(translationAxis), Constants.DriveConstants.swerveDeadband)
+                * TunerConstants.kMaxSpeed) * m_gasPedalDriveMult)
+            .withVelocityY((-MathUtil.applyDeadband(
+                driveController.getRawAxis(strafeAxis), Constants.DriveConstants.swerveDeadband)
+                * TunerConstants.kMaxSpeed) * m_gasPedalDriveMult)
+            .withRotationalRate((-MathUtil.applyDeadband(
+                driveController.getRawAxis(rotationAxis), Constants.DriveConstants.swerveRotateDeadband)
+                * TunerConstants.kMaxAngularSpeed) * m_gasPedalRotMult)
         );
     }
 
@@ -426,7 +429,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         //Add telemtry
         Logger.recordOutput("SwerveDriveTrain/Yaw", this.getPigeon2().getYaw().getValue());
         Logger.recordOutput("SwerveDriveTrain/PoseEstimate",m_poseEstimator.getEstimatedPosition());
-        Logger.recordOutput("SwerveDriveTrain/ModulePositions",this.getState().ModulePositions);                            }
+        Logger.recordOutput("SwerveDriveTrain/ModulePositions",this.getState().ModulePositions);
+        for (int i = 0; i < this.getModules().length; i++) {
+            var module = this.getModule(i);
+            Logger.recordOutput("SwerveDriveTrain/Module" + i + "/DriveConnected", module.getDriveMotor().isConnected());
+            Logger.recordOutput("SwerveDriveTrain/Module" + i + "/SteerConnected", module.getSteerMotor().isConnected());
+            Logger.recordOutput("SwerveDriveTrain/Module" + i + "/EncoderConnected", module.getEncoder().isConnected());
+            Logger.recordOutput("SwerveDriveTrain/Module" + i + "/DriveVelocityRPM", module.getDriveMotor().getVelocity().getValueAsDouble());
+            Logger.recordOutput("SwerveDriveTrain/Module" + i + "/DriveStatorCurrentAmps", module.getDriveMotor().getStatorCurrent().getValueAsDouble());
+        }
+    }
 
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();

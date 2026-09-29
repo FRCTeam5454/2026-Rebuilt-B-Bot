@@ -7,8 +7,10 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.utilities.ObsidianCANSparkMax;
 import static frc.robot.Constants.IntakeConstants;
 
@@ -18,10 +20,16 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
   }
   
-  public void RunIntake(double speed) {
+  public void runIntake(double speed) {
     m_intakeMotor.set(speed);
   }
-  public void IntakeMotorStop() {
+  public void intakeMotorStop() {
     m_intakeMotor.stopMotor();
+  }
+  public Command intakeOnCommand(){
+    return Commands.runOnce(    ()->runIntake(Constants.IntakeConstants.kIntakeHighSpeed),this);
+  }
+  public Command intakeOffCommand(){
+    return Commands.runOnce(    ()->intakeMotorStop(),this);
   }
 }
