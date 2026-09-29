@@ -4,13 +4,15 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import frc.robot.Constants;
 /** Spins the flywheel to a target RPM (closed loop) and only runs the kicker once it is up to speed. */
 public class ShooterCommand extends Command {
   @SuppressWarnings("PMD.UnusedPrivateField")
   private final ShootingSubsystem m_subsystem;
+  private final IntakeSubsystem m_intake;
   private double m_rpm;
   private double m_oldrpm=0;
   private double m_oldkickerspeed=0;
@@ -23,8 +25,9 @@ public class ShooterCommand extends Command {
    * @param rpm The closed-loop flywheel velocity setpoint (RPM).
    * @param kickerspeed The kicker percent output to use once the flywheel is at speed.
    */
-  public ShooterCommand(ShootingSubsystem subsystem, double rpm, double kickerspeed) {
+  public ShooterCommand(ShootingSubsystem subsystem, IntakeSubsystem intake,double rpm, double kickerspeed) {
     m_subsystem = subsystem;
+    m_intake = intake;
     m_rpm = rpm;
     m_kickerspeed = kickerspeed;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -41,6 +44,7 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_intake.runIntake(Constants.IntakeConstants.kIntakeHighSpeed);
     double kicker = m_subsystem.isAtTargetRPM() ? m_kickerspeed : 0.0;
     System.out.println("Kicker Speeed" + kicker+ " Shooter Speed- " + m_subsystem.getShooterRPM() + "  Target RPM:" + m_rpm);
     if((m_rpm!=m_oldrpm) || (m_kickerspeed!=m_oldkickerspeed)) {
@@ -54,6 +58,7 @@ public class ShooterCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     m_subsystem.stopShooter();
+    m_intake.intakeMotorStop();
   }
 
   // Returns true when the command should end.

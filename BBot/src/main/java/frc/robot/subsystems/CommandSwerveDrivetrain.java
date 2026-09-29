@@ -345,9 +345,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      * @return Command to run
      */
     public Command applyRequestDrive(CommandXboxController driveController,int translationAxis,int strafeAxis,int rotationAxis) {
-        SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(TunerConstants.kMaxSpeed * Constants.DriveConstants.swerveDeadband)
-            .withRotationalDeadband(TunerConstants.kMaxAngularSpeed * Constants.DriveConstants.swerveRotateDeadband);
+        // Deadband is applied (and rescaled) on the stick input below via MathUtil.applyDeadband.
+        // Don't also set withDeadband/withRotationalDeadband here - that stacks a second,
+        // non-rescaled deadband and makes low-speed control dead and then jumpy.
+        SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
 
         return this.applyRequest(() -> drive.withVelocityX((-MathUtil.applyDeadband(
                 driveController.getRawAxis(translationAxis), Constants.DriveConstants.swerveDeadband)
