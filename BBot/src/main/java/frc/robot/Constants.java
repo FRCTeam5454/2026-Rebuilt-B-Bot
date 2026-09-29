@@ -41,6 +41,7 @@ public final class Constants {
     public static final int ShooterLeaderMotorPort = 61; 
     public static final int KickerMotorPort = 62; 
     public static final double KickerSpeed = 0.8;
+    public static final double KickerIntakeSpeed=-0.8;
     public static final double ShooterSpeed = 1;
     public static final int kCurrentLimit = 50;
 
@@ -53,7 +54,8 @@ public final class Constants {
     public static final double kShooterD = 0.0;
     public static final double kShooterFF = 0.0021; // ~ 1 / NEO free speed (RPM)
     public static final double ShooterTargetRPM = 4500.0;
-    public static final double ShooterRPMTolerance = 500.0; // should be 150
+
+    public static final double ShooterRPMTolerance = 200.0; // should be 150
   }
 
   public static final class LEDConstants {
@@ -83,8 +85,10 @@ public final class Constants {
     public static final double swerveRotateDeadband = 0.17; //0.17
     public static final double MinGasPedalSpeed=0.20;
     //Support    6328 DriveConstants Class
-    public static final double trackWidthX = edu.wpi.first.math.util.Units.inchesToMeters(27.5);
-    public static final double  trackWidthY= edu.wpi.first.math.util.Units.inchesToMeters(27.5);
+    // Must match the module X/Y positions in TunerConstants (FL = +13 in, +14.25 in), which
+    // the CTRE drivetrain uses. X = front-to-back module spacing, Y = left-to-right.
+    public static final double trackWidthX = edu.wpi.first.math.util.Units.inchesToMeters(26.0);
+    public static final double  trackWidthY= edu.wpi.first.math.util.Units.inchesToMeters(28.5);
  
     public static final Translation2d[] moduleTranslations = {
     new Translation2d(trackWidthX / 2, trackWidthY / 2),

@@ -53,6 +53,12 @@ public class ShootingSubsystem extends SubsystemBase {
         PersistMode.kNoPersistParameters);
   }
 
+  public void runKicker(double speed){
+    m_kicker.set(speed);
+  }
+  public void stopKicker(){
+    m_kicker.set(0);
+  }
   /**
    * Open-loop shooter control (percent output), unchanged behavior.
    *

@@ -25,6 +25,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
   public void intakeMotorStop() {
     m_intakeMotor.stopMotor();
+  
   }
   public Command intakeOnCommand(){
     return Commands.runOnce(    ()->runIntake(Constants.IntakeConstants.kIntakeHighSpeed),this);

@@ -84,13 +84,14 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    Command shootCommand = new ShooterCommand(m_shootingSubsystem, Constants.ShooterConstants.ShooterTargetRPM, Constants.ShooterConstants.KickerSpeed);
+    Command shootCommand = new ShooterCommand(m_shootingSubsystem, m_Intake,Constants.ShooterConstants.ShooterTargetRPM, Constants.ShooterConstants.KickerSpeed);
     m_xBoxDriver.rightTrigger().whileTrue(shootCommand);
 
-   Command highIntake = new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeHighSpeed);
+   Command highIntake = new IntakeCommand(m_Intake,m_shootingSubsystem,Constants.IntakeConstants.kIntakeHighSpeed,Constants.ShooterConstants.KickerIntakeSpeed);
+   
    m_xBoxDriver.a().whileTrue(highIntake);
 
-   Command outIntake = new IntakeCommand(m_Intake,Constants.IntakeConstants.kIntakeOutSpeed);
+   Command outIntake = new IntakeCommand(m_Intake,m_shootingSubsystem, Constants.IntakeConstants.kIntakeOutSpeed, Constants.ShooterConstants.KickerSpeed);
    m_xBoxDriver.x().whileTrue(outIntake);
   }
 
