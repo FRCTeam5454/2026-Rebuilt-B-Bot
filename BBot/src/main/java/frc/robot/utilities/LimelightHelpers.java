@@ -1313,7 +1313,7 @@ public class LimelightHelpers {
         return getLimelightNTDouble(limelightName, "getpipe");
     }
 
-    /**
+    /**fo
      * Gets the current pipeline type.
      * @param limelightName Name of the Limelight camera
      * @return Pipeline type string (e.g. "retro", "apriltag", etc)
@@ -1923,7 +1923,7 @@ public class LimelightHelpers {
     }
 
     /**
-     * Sets up port forwarding for a Limelight 3A/3G connected via USB.
+     * Sets up port forwarding for a Limelight 3G connected via USB.
      * This allows access to the Limelight web interface and video stream
      * when connected to the robot over USB.
      *
