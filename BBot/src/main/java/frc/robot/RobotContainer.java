@@ -11,6 +11,7 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
+import frc.robot.utilities.Limelight;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 
@@ -45,7 +46,9 @@ public class RobotContainer {
   // CANdle LEDs. Its periodic() drives color from robot state: purple Larson while
   // disabled, solid purple in auto, alliance color in teleop.
   private final CandleSubsystem m_candle = new CandleSubsystem(Constants.LEDConstants.kCandleId,Constants.kCanivoreBus);
-  
+  private final Limelight m_Limelight = new Limelight(Constants.LimelightConstants.kheight,Constants.LimelightConstants.kMountingAngle,
+                            Constants.LimelightConstants.xOffset,Constants.LimelightConstants.limelightName);
+
 
   //drive
   private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -99,9 +102,10 @@ public class RobotContainer {
     //Auto Commands (AKA the stuff that robot should do on its own other than driving)
   }
 
-  private void refreshSmartDashboard(){
+  public void refreshSmartDashboard(){
     //Outputting general things we want to see on the SmartDashboard, try to make this the over-arching important stuff
     try{
+      System.out.println(m_Limelight.getDistance());
     }catch(Exception e){}
   }
 
@@ -136,8 +140,9 @@ public class RobotContainer {
   public void TeleopPeriodic(){
   }
 
-  public void AllPeriodic(){    
-  }
+  public void AllPeriodic()
+  {refreshSmartDashboard();}    
+  
 
   private void resetDefaultCommand(){
     m_swerve.setDefaultCommand(m_swerve.applyRequestDrive(m_xBoxDriver, translationAxis, strafeAxis, rotationAxis));

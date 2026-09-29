@@ -35,7 +35,30 @@ public final class Constants {
   }
     public static final Matrix<N3, N1> kPoseEstimatorStandardDeviations = VecBuilder.fill(0.1, 0.1, 10);
     public static final Matrix<N3, N1> kVisionStandardDeviations = VecBuilder.fill(5, 5, 500);
+  public static final class LimelightConstants{
+    public static final double kheight=0.166;
+    public static final double kRobotFrameOffset=-0.297; // from back of robot
+    public static final double xOffset=0;  
+    public static final double kMountingAngle=31.66;
+    public static final String limelightName="limelight"; 
+  }  
+   public static final class LimeLightValues {
     
+    //Confidence Max and Min Deadband Values
+    public static final double confidenceDeadbandMin=60;
+    public static final double confidenceDeadbandMax=140;
+
+    //Multiplier to Turn Pathplanner X & Y Pos to Meters
+    public static final double cartPointToMeterMult=1;
+
+    public static final double maxMeterDiff=0.1;
+    public static final double maxRotDiff=5;
+
+    //Tested Average of Differences in X coords
+    public static final double confidenceXMean=0.017692936661984578;
+    //Tested Average of Differences in Y coords
+    public static final double confidenceYMean=1.2286761570822624E-5;
+   }
   public static final class ShooterConstants {
     public static final int ShooterFollowerMotorPort = 21;
     public static final int ShooterLeaderMotorPort = 61; 
@@ -58,6 +81,7 @@ public final class Constants {
     public static final double ShooterRPMTolerance = 200.0; // should be 150
   }
 
+  
   public static final class LEDConstants {
     /** CAN id of the CTRE CANdle LED controller. */
     public static final int kCandleId = 55;
