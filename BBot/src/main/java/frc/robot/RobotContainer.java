@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -111,7 +113,13 @@ public class RobotContainer {
 
   private void createAutonomousCommandList(){
     try{
+      // Every .auto in deploy/pathplanner/autos is listed (default "None").
+      // Shows in Shuffleboard's SmartDashboard tab / Elastic, and on its own "Autonomous" tab.
       SmartDashboard.putData("Auto Chooser",m_autoChooser);
+      Shuffleboard.getTab("Autonomous")
+          .add("Auto Chooser", m_autoChooser)
+          .withWidget(BuiltInWidgets.kComboBoxChooser)
+          .withSize(3, 1);
 
     }catch(Exception e){
       SmartDashboard.putString("Asher's Cool Message:",e.getMessage());

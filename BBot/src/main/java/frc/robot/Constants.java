@@ -28,8 +28,18 @@ public final class Constants {
   public static final String kCanivoreBus = "5454Canivore";
   public static final PPHolonomicDriveController pathPlanDriveController = new PPHolonomicDriveController(
     new PIDConstants(3.0, 0, 0.25), // Translation constants 
-    new PIDConstants(25.0, 0, 1) // Rotation constants
+    new PIDConstants(5.0, 0, 1) // Rotation constants (was 25 - too aggressive, caused heading wobble)
   );
+  /**
+   * Robot physical properties for PathPlanner. The PathPlanner GUI's Robot Config
+   * (deploy/pathplanner/settings.json) is the primary source; these are only used as a fallback
+   * if that file can't be loaded. Keep both in sync.
+   */
+  public static final class AutoConstants {
+    public static final double kRobotMassKg = 60.0; // TODO: weigh robot with bumpers + battery
+    public static final double kRobotMOI = 6.0;     // kg*m^2, TODO: measure or estimate
+    public static final double kWheelCOF = 1.2;
+  }
   public static class InputControllers {
     public static final int kXboxDrive = 0;
   }

@@ -15,6 +15,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveRequest.PointWheelsAt;
 import com.ctre.phoenix6.swerve.SwerveRequest.SwerveDriveBrake;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -32,6 +33,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
@@ -229,15 +231,17 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public void configAutoBuilder(){
-         // Load the RobotConfig from the GUI settings. You should probably
-    // store this in your Constants file
+    // Robot physical config from the PathPlanner GUI (deploy/pathplanner/settings.json).
     RobotConfig config;
     try{
       config = RobotConfig.fromGUISettings();
     } catch (Exception e) {
-      // Handle exception as needed
-      config = new RobotConfig(0,0,null);
-      e.printStackTrace();
+      // Never let a missing/bad settings.json crash robot startup - AutoBuilder must still be
+      // configured or AutoBuilder.buildAutoChooser() in RobotContainer throws.
+      DriverStation.reportError(
+          "PathPlanner settings.json could not be loaded; using fallback RobotConfig from TunerConstants. "
+              + e.getMessage(), false);
+      config = buildFallbackRobotConfig();
     }
 
     // Configure AutoBuilder last
@@ -261,6 +265,28 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             },
             this // Reference to this subsystem to set requirements
         );
+    }
+
+    /**
+     * PathPlanner RobotConfig built from the drivetrain's own constants. Only used when
+     * settings.json can't be read; keep Constants.AutoConstants in sync with the GUI.
+     * (The old fallback, new RobotConfig(0, 0, null), threw "only supports 4 swerve modules".)
+     */
+    private RobotConfig buildFallbackRobotConfig() {
+        SwerveModuleConstants<?, ?, ?> module = TunerConstants.FrontLeft; // drive side is identical on all four
+        ModuleConfig moduleConfig = new ModuleConfig(
+            module.WheelRadius,
+            module.SpeedAt12Volts,
+            Constants.AutoConstants.kWheelCOF,
+            DCMotor.getKrakenX60(1),
+            module.DriveMotorGearRatio,
+            module.SlipCurrent,
+            1);
+        return new RobotConfig(
+            Constants.AutoConstants.kRobotMassKg,
+            Constants.AutoConstants.kRobotMOI,
+            moduleConfig,
+            getModuleLocations());
     }
 
     public void gyroReset(){
