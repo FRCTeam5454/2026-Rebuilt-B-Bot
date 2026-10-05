@@ -6,30 +6,40 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-/** Spins the flywheel to a target RPM (closed loop) and only runs the kicker once it is up to speed. */
-public class ShooterCommand extends Command {
+
+/**
+ * Same shooting logic as {@link ShooterCommand} (spin the flywheel to a target RPM, run the
+ * intake, and only run the kicker once the flywheel is up to speed), but ends on its own after a
+ * set amount of time. Intended for autonomous.
+ */
+public class ScoreHopper extends Command {
   @SuppressWarnings("PMD.UnusedPrivateField")
   private final ShootingSubsystem m_subsystem;
   private final IntakeSubsystem m_intake;
+  private final Timer m_timer = new Timer();
   private double m_rpm;
   private double m_oldrpm=0;
   private double m_oldkickerspeed=0;
   private double m_kickerspeed;
+  private double m_shootTimeSeconds;
 
   /**
-   * Creates a new ShooterCommand.
+   * Creates a new ScoreHopper.
    *
-   * @param subsystem The subsystem used by this command.
+   * @param subsystem The shooter subsystem used by this command.
+   * @param intake The intake subsystem used by this command.
    * @param rpm The closed-loop flywheel velocity setpoint (RPM).
-   * @param kickerspeed The kicker percent output to use once the flywheel is at speed.
+   * @param shootTimeSeconds How long to run before the command ends, in seconds (includes spin-up).
    */
-  public ShooterCommand(ShootingSubsystem subsystem, IntakeSubsystem intake,double rpm, double kickerspeed) {
+  public ScoreHopper(ShootingSubsystem subsystem, IntakeSubsystem intake, double rpm, double shootTimeSeconds) {
     m_subsystem = subsystem;
     m_intake = intake;
     m_rpm = rpm;
-    m_kickerspeed = kickerspeed;
+    m_shootTimeSeconds = shootTimeSeconds;
+    m_kickerspeed = Constants.ShooterConstants.KickerSpeed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -37,9 +47,9 @@ public class ShooterCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // Forget the last run's values so the first execute() always sends a fresh command.
     m_oldrpm=0;
     m_oldkickerspeed=0;
+    m_timer.restart();
     // Start spinning up; hold the kicker until the flywheel is at speed.
     m_subsystem.runShooterRPM(m_rpm, 0.0);
   }
@@ -62,6 +72,7 @@ public class ShooterCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_timer.stop();
     m_subsystem.stopShooter();
     m_intake.intakeMotorStop();
   }
@@ -69,6 +80,6 @@ public class ShooterCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_timer.hasElapsed(m_shootTimeSeconds);
   }
 }

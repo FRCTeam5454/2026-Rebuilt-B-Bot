@@ -89,6 +89,9 @@ public final class Constants {
     public static final double ShooterTargetRPM = 4500.0;
 
     public static final double ShooterRPMTolerance = 200.0; // should be 150
+    // Run times for the ScoreHopper PathPlanner named commands (seconds, includes spin-up)
+    public static final double kShootQuickSeconds = 3.0;
+    public static final double kShootLongSeconds = 7.0;
   }
 
   

@@ -9,6 +9,12 @@
           "data": {
             "pathName": "GoToDepot"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootQuick"
+          }
         }
       ]
     }

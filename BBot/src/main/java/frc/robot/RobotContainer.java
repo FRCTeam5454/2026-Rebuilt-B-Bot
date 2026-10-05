@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.InputControllers;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ScoreHopper;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -16,6 +17,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
@@ -102,6 +104,14 @@ public class RobotContainer {
 
   public void configureNamedCommands() {
     //Auto Commands (AKA the stuff that robot should do on its own other than driving)
+    // Must be registered before AutoBuilder.buildAutoChooser() so the autos can find them.
+    // Names must match the Named Command names used in the PathPlanner GUI exactly.
+    NamedCommands.registerCommand("ShootQuick",
+        new ScoreHopper(m_shootingSubsystem, m_Intake,
+            Constants.ShooterConstants.ShooterTargetRPM, Constants.ShooterConstants.kShootQuickSeconds));
+    NamedCommands.registerCommand("ShootLong",
+        new ScoreHopper(m_shootingSubsystem, m_Intake,
+            Constants.ShooterConstants.ShooterTargetRPM, Constants.ShooterConstants.kShootLongSeconds));
   }
 
   public void refreshSmartDashboard(){
