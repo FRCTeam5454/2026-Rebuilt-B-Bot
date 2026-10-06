@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterToShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootQuick"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ShotToDepot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DepotToStart"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StartToShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootLong"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

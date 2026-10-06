@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterToShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootQuick"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ShotToReload"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Inverse ShotToReload"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootLong"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
