@@ -86,12 +86,14 @@ public final class Constants {
     public static final double kShooterI = 0.0;
     public static final double kShooterD = 0.0;
     public static final double kShooterFF = 0.0021; // ~ 1 / NEO free speed (RPM)
-    public static final double ShooterTargetRPM = 4500.0;
+    public static final double ShooterTargetRPM = 4550.0;
 
-    public static final double ShooterRPMTolerance = 200.0; // should be 150
+    public static final double ShooterRPMTolerance = 50.0; // should be 150
     // Run times for the ScoreHopper PathPlanner named commands (seconds, includes spin-up)
     public static final double kShootQuickSeconds = 3.0;
     public static final double kShootLongSeconds = 7.0;
+    public static final double kDistanceLow=54;
+    public static final double kDistanceHigh=79;
   }
 
   
