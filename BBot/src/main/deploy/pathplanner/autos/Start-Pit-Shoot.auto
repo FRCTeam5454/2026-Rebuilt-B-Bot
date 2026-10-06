@@ -1,0 +1,55 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PrebrigdeToPit"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PitTurn"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Alternate PitToPit"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PitToBridge"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BridgeToMid"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MidToCenter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootQuick"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
