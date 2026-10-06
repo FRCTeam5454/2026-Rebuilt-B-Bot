@@ -51,6 +51,7 @@ public class ShootingSubsystem extends SubsystemBase {
         closedLoopConfig,
         ResetMode.kNoResetSafeParameters,
         PersistMode.kNoPersistParameters);
+    //LEFT FOLLOWER IS SET IN Constructor
   }
 
   public void runKicker(double speed){

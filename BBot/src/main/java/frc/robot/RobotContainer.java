@@ -117,7 +117,13 @@ public class RobotContainer {
   public void refreshSmartDashboard(){
     //Outputting general things we want to see on the SmartDashboard, try to make this the over-arching important stuff
     try{
-      System.out.println(m_Limelight.getDistance());
+      double distance=m_Limelight.getDistance();
+      boolean inShotRange=false;
+      if ((distance < Constants.ShooterConstants.kDistanceHigh) && (distance > Constants.ShooterConstants.kDistanceLow)) {
+        inShotRange=true;
+      }
+      SmartDashboard.putBoolean("In Shot Range",inShotRange);
+      SmartDashboard.putNumber("DistancetoHub",distance);
     }catch(Exception e){}
   }
 
