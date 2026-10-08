@@ -123,9 +123,9 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int kIntakeMotorID = 14;
-    public static final double kIntakeHighSpeed=1.0;
+    public static final double kIntakeHighSpeed=0.8;
     public static final double kIntakeLowSpeed=0.5;
-    public static final double kIntakeOutSpeed=-1.0;
+    public static final double kIntakeOutSpeed=-0.9;
   }
      
   public static final class DriveConstants{
