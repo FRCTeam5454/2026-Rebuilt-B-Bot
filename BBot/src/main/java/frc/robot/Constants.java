@@ -73,7 +73,7 @@ public final class Constants {
     public static final int ShooterFollowerMotorPort = 21;
     public static final int ShooterLeaderMotorPort = 61; 
     public static final int KickerMotorPort = 62; 
-    public static final double KickerSpeed = 0.8;
+    public static final double KickerSpeed = 0.5;
     public static final double KickerIntakeSpeed=-0.8;
     public static final double ShooterSpeed = 1;
     public static final int kCurrentLimit = 50;
@@ -86,7 +86,7 @@ public final class Constants {
     public static final double kShooterI = 0.0;
     public static final double kShooterD = 0.0;
     public static final double kShooterFF = 0.0021; // ~ 1 / NEO free speed (RPM)
-    public static final double ShooterTargetRPM = 4550.0;
+    public static final double ShooterTargetRPM = 4500.0;
 
     public static final double ShooterRPMTolerance = 50.0; // should be 150
     // Run times for the ScoreHopper PathPlanner named commands (seconds, includes spin-up)
@@ -94,6 +94,17 @@ public final class Constants {
     public static final double kShootLongSeconds = 7.0;
     public static final double kDistanceLow=54;
     public static final double kDistanceHigh=79;
+
+    // Distance-based shot lookup: Limelight distance (same units as the "DistancetoHub"
+    // dashboard value) -> flywheel RPM. RPM is linearly interpolated between points and
+    // clamped to the end values outside 54-100.
+    // 54-83 are measured. 100 is EXTRAPOLATED from the trend of the 71.2-83 points
+    // (~7.6 RPM per unit of distance) - verify it on the field.
+    public static final double[] kShotLookupDistances = {54.0, 71.2, 75.0, 79.0, 83.0, 100.0};
+    public static final double[] kShotLookupRPMs      = {4200, 4500, 4550, 4550, 4600, 4730};
+    // If the Limelight loses the target mid-shot, keep using the last distance for this long
+    // (seconds) before falling back to the fixed ShooterTargetRPM.
+    public static final double kShotDistanceHoldSeconds = 0.5;
   }
 
   

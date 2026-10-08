@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -30,6 +31,19 @@ public class ShootingSubsystem extends SubsystemBase {
 
   /** Last commanded closed-loop setpoint (RPM). 0 means open-loop / stopped. */
   private double m_targetRPM = 0.0;
+
+  /** Limelight distance -> flywheel RPM. Interpolates between points, clamps outside the table. */
+  private static final InterpolatingDoubleTreeMap kShotMap = new InterpolatingDoubleTreeMap();
+  static {
+    for (int i = 0; i < Constants.ShooterConstants.kShotLookupDistances.length; i++) {
+      kShotMap.put(Constants.ShooterConstants.kShotLookupDistances[i], Constants.ShooterConstants.kShotLookupRPMs[i]);
+    }
+  }
+
+  /** @return the flywheel RPM for a shot from the given Limelight distance */
+  public static double getRPMForDistance(double distance) {
+    return kShotMap.get(distance);
+  }
 
   /** Creates a new ShootingSubsystem. */
   @SuppressWarnings("removal") // velocityFF is the documented shooter FF recipe; still valid in REVLib 2026

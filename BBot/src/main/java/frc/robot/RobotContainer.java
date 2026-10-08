@@ -21,6 +21,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import java.util.List;
 
@@ -91,8 +92,13 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    // Left trigger: fixed-speed shot
     Command shootCommand = new ShooterCommand(m_shootingSubsystem, m_Intake,Constants.ShooterConstants.ShooterTargetRPM, Constants.ShooterConstants.KickerSpeed);
-    m_xBoxDriver.rightTrigger().whileTrue(shootCommand);
+    m_xBoxDriver.leftTrigger().whileTrue(shootCommand);
+
+    // right trigger: distance-based shot - RPM from the Limelight distance lookup table
+    Command lookupShotCommand = new ShooterCommand(m_shootingSubsystem, m_Intake, this::getLookupShotRPM, Constants.ShooterConstants.KickerSpeed);
+    m_xBoxDriver.rightTrigger().whileTrue(lookupShotCommand);
 
    Command highIntake = new IntakeCommand(m_Intake,m_shootingSubsystem,Constants.IntakeConstants.kIntakeHighSpeed,Constants.ShooterConstants.KickerIntakeSpeed);
    
@@ -100,6 +106,31 @@ public class RobotContainer {
 
    Command outIntake = new IntakeCommand(m_Intake,m_shootingSubsystem, Constants.IntakeConstants.kIntakeOutSpeed, Constants.ShooterConstants.KickerSpeed);
    m_xBoxDriver.x().whileTrue(outIntake);
+  }
+
+  // Last valid Limelight distance for the lookup shot, and when it was seen
+  private double m_lastShotDistance = 0;
+  private double m_lastShotDistanceTime = Double.NEGATIVE_INFINITY;
+
+  /**
+   * Flywheel RPM for the left-trigger lookup shot. Uses the live Limelight distance; if the
+   * target drops out briefly mid-shot it keeps the last distance for kShotDistanceHoldSeconds,
+   * then falls back to the fixed ShooterTargetRPM.
+   */
+  private double getLookupShotRPM() {
+    double now = Timer.getFPGATimestamp();
+    if (m_Limelight.isAnyTargetAvailable()) {
+      double distance = m_Limelight.getDistance();
+      if (distance > 0) {
+        m_lastShotDistance = distance;
+        m_lastShotDistanceTime = now;
+      }
+    }
+    double rpm = (now - m_lastShotDistanceTime <= Constants.ShooterConstants.kShotDistanceHoldSeconds)
+        ? ShootingSubsystem.getRPMForDistance(m_lastShotDistance)
+        : Constants.ShooterConstants.ShooterTargetRPM;
+    SmartDashboard.putNumber("Lookup Shot RPM", rpm);
+    return rpm;
   }
 
   public void configureNamedCommands() {
@@ -112,6 +143,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("ShootLong",
         new ScoreHopper(m_shootingSubsystem, m_Intake,
             Constants.ShooterConstants.ShooterTargetRPM, Constants.ShooterConstants.kShootLongSeconds));
+    // Instant commands: IntakeOn starts the intake and finishes immediately, leaving it running
+    // while the auto continues (e.g. driving a path); IntakeOff stops it.
+    NamedCommands.registerCommand("IntakeOn", m_Intake.intakeOnCommand());
+    NamedCommands.registerCommand("IntakeOff", m_Intake.intakeOffCommand());
   }
 
   public void refreshSmartDashboard(){
@@ -146,6 +181,9 @@ public class RobotContainer {
   }
 
   public void DisabledInit(){
+    // An auto can leave the intake on (IntakeOn). Phoenix 6 keeps re-sending a motor's last
+    // request, so without this the intake would start up again when teleop enables.
+    m_Intake.intakeMotorStop();
   }
 
   public void DisabledPeriodic(){

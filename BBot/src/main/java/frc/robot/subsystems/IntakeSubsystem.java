@@ -9,15 +9,19 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenix6.hardware.TalonFX;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.utilities.ObsidianCANSparkMax;
 import static frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private final ObsidianCANSparkMax m_intakeMotor = new ObsidianCANSparkMax(IntakeConstants.kIntakeMotorID, MotorType.kBrushless,true);
-  
+  //50 amp current limit hard coded - BAD
+  //private final ObsidianCANSparkMax m_intakeMotor = new ObsidianCANSparkMax(IntakeConstants.kIntakeMotorID, MotorType.kBrushless,true,70);
+  //changed to talonfx
+  private final TalonFX m_intakeMotor = new TalonFX(IntakeConstants.kIntakeMotorID);
   public IntakeSubsystem() {
+    
   }
   
   public void runIntake(double speed) {
