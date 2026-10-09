@@ -9,6 +9,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ScoreHopper;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.AlignToHubCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
@@ -99,6 +100,8 @@ public class RobotContainer {
     // right trigger: distance-based shot - RPM from the Limelight distance lookup table
     Command lookupShotCommand = new ShooterCommand(m_shootingSubsystem, m_Intake, this::getLookupShotRPM, Constants.ShooterConstants.KickerSpeed);
     m_xBoxDriver.rightTrigger().whileTrue(lookupShotCommand);
+
+    m_xBoxDriver.rightBumper().whileTrue(new AlignToHubCommand(m_swerve, m_Limelight));
 
    Command highIntake = new IntakeCommand(m_Intake,m_shootingSubsystem,Constants.IntakeConstants.kIntakeHighSpeed,Constants.ShooterConstants.KickerIntakeSpeed);
    
