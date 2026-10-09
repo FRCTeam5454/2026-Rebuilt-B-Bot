@@ -52,6 +52,6 @@ public class AlignToHubCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return m_limelight.hasAprilTagTarget() && m_headingController.atSetpoint();
   }
 }
