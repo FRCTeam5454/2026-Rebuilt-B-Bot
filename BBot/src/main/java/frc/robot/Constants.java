@@ -83,14 +83,14 @@ public final class Constants {
     // on-board 1 kHz loop and act on the leader's built-in NEO encoder (RPM).
     // These are starting points - tune kFF first (output with zero P/I/D),
     // then bump kP until it holds under load.
-    public static final double kShooterP = 0.000;
-    public static final double kShooterI = 0.0;
+    public static final double kShooterP = 0.0002;
+    public static final double kShooterI = 0.00000000005;
     public static final double kShooterD = 0.0;
     public static final double kShooterFF = 0.0021; // ~ 1 / NEO free speed (RPM)
     public static final double ShooterTargetRPM = 4500.0;
     public static final double ShooterPrimeRPM = 3000.0;
 
-    public static final double ShooterRPMTolerance = 50.0; // should be 150
+    public static final double ShooterRPMTolerance = 100.0; // should be 150
     // Run times for the ScoreHopper PathPlanner named commands (seconds, includes spin-up)
     public static final double kShootQuickSeconds = 3.0;
     public static final double kShootLongSeconds = 7.0;
