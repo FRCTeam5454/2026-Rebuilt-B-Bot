@@ -74,11 +74,6 @@ public class ShootingSubsystem extends SubsystemBase {
   public void stopKicker(){
     m_kicker.set(0);
   }
-
-  public void primeMotor() {
-    m_kicker.set(Constants.ShooterConstants.KickerPrimeSpeed);
-  }
-
   /**
    * Open-loop shooter control (percent output), unchanged behavior.
    *
