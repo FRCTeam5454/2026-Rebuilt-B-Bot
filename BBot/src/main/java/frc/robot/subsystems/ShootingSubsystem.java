@@ -112,7 +112,7 @@ public class ShootingSubsystem extends SubsystemBase {
   public void primeShooter() {
     double targetRPM = Constants.ShooterConstants.ShooterPrimeRPM;
     m_shooterPID.setSetpoint(targetRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
-    primeMotor();
+    m_kicker.stopMotor();
   }
 
   /** @return current flywheel velocity (RPM) from the leader's NEO encoder */
