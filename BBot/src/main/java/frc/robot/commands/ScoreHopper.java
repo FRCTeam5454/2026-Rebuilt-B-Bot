@@ -73,7 +73,7 @@ public class ScoreHopper extends Command {
   @Override
   public void end(boolean interrupted) {
     m_timer.stop();
-    m_subsystem.stopShooter();
+    m_subsystem.primeShooter();
     m_intake.intakeMotorStop();
   }
 

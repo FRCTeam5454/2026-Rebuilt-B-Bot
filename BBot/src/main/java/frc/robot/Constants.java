@@ -74,9 +74,10 @@ public final class Constants {
     public static final int ShooterLeaderMotorPort = 61; 
     public static final int KickerMotorPort = 62; 
     public static final double KickerSpeed = 0.5;
+    public static final double KickerPrimeSpeed = 0.2;
     public static final double KickerIntakeSpeed=-0.8;
     public static final double ShooterSpeed = 1;
-    public static final int kCurrentLimit = 50;
+    public static final int kCurrentLimit = 70;
 
     // Closed-loop flywheel velocity control. Gains run on the SPARK MAX's
     // on-board 1 kHz loop and act on the leader's built-in NEO encoder (RPM).
@@ -87,6 +88,7 @@ public final class Constants {
     public static final double kShooterD = 0.0;
     public static final double kShooterFF = 0.0021; // ~ 1 / NEO free speed (RPM)
     public static final double ShooterTargetRPM = 4500.0;
+    public static final double ShooterPrimeRPM = 3000.0;
 
     public static final double ShooterRPMTolerance = 50.0; // should be 150
     // Run times for the ScoreHopper PathPlanner named commands (seconds, includes spin-up)

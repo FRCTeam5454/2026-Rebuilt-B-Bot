@@ -74,6 +74,11 @@ public class ShootingSubsystem extends SubsystemBase {
   public void stopKicker(){
     m_kicker.set(0);
   }
+
+  public void primeMotor() {
+    m_kicker.set(Constants.ShooterConstants.KickerPrimeSpeed);
+  }
+
   /**
    * Open-loop shooter control (percent output), unchanged behavior.
    *
@@ -102,6 +107,12 @@ public class ShootingSubsystem extends SubsystemBase {
     m_targetRPM = 0.0;
     m_rightLeader.stopMotor();
     m_kicker.stopMotor();
+  }
+
+  public void primeShooter() {
+    m_targetRPM = Constants.ShooterConstants.ShooterPrimeRPM;
+    m_shooterPID.setSetpoint(m_targetRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
+    primeMotor();
   }
 
   /** @return current flywheel velocity (RPM) from the leader's NEO encoder */
