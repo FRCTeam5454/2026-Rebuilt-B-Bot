@@ -110,8 +110,8 @@ public class ShootingSubsystem extends SubsystemBase {
   }
 
   public void primeShooter() {
-    m_targetRPM = Constants.ShooterConstants.ShooterPrimeRPM;
-    m_shooterPID.setSetpoint(m_targetRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
+    double targetRPM = Constants.ShooterConstants.ShooterPrimeRPM;
+    m_shooterPID.setSetpoint(targetRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
     primeMotor();
   }
 
