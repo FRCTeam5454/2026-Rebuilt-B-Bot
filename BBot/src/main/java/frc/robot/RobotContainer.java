@@ -102,13 +102,14 @@ public class RobotContainer {
     Command lookupShotCommand = new ShooterCommand(m_shootingSubsystem, m_Intake, this::getLookupShotRPM, Constants.ShooterConstants.KickerSpeed);
     m_xBoxDriver.rightTrigger().whileTrue(lookupShotCommand);
 
-    Command alignToHub = new AlignToHubCommand(m_swerve, m_Limelight);
+    AlignToHubCommand alignToHub = new AlignToHubCommand(m_swerve, m_Limelight);
     Command alignmentRumble = Commands.startEnd(
         () -> m_xBoxDriver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 1.0),
         () -> m_xBoxDriver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 0.0))
         .withTimeout(0.3);
 
-    m_xBoxDriver.rightBumper().onTrue(alignToHub.andThen(alignmentRumble));
+    // whileTrue: releasing the bumper always hands the drivetrain back to the driver
+    m_xBoxDriver.rightBumper().whileTrue(alignToHub.andThen(alignmentRumble.onlyIf(alignToHub::isAligned)));
 
    Command highIntake = new IntakeCommand(m_Intake,m_shootingSubsystem,Constants.IntakeConstants.kIntakeHighSpeed,Constants.ShooterConstants.KickerIntakeSpeed);
    

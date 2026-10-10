@@ -55,6 +55,8 @@ public final class Constants {
     public static final double kHubAlignD = 0.001;
     public static final double kHubAlignMaxRotation = 0.35;
     public static final double kHubAlignToleranceDegrees = 1.5;
+    // Seconds without seeing a tag before auto-align gives control back to the driver
+    public static final double kHubAlignNoTargetTimeout = 0.25;
   }  
    public static final class LimeLightValues {
     
