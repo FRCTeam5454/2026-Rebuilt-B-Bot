@@ -51,6 +51,10 @@ public final class Constants {
     public static final double xOffset=0;  
     public static final double kMountingAngle=31.66;
     public static final String limelightName="limelight"; 
+    public static final double kHubAlignP = 0.025;
+    public static final double kHubAlignD = 0.001;
+    public static final double kHubAlignMaxRotation = 0.35;
+    public static final double kHubAlignToleranceDegrees = 1.5;
   }  
    public static final class LimeLightValues {
     

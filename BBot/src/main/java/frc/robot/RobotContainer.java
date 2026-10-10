@@ -9,6 +9,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ScoreHopper;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.AlignToHubCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
@@ -31,6 +32,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -99,6 +101,14 @@ public class RobotContainer {
     // right trigger: distance-based shot - RPM from the Limelight distance lookup table
     Command lookupShotCommand = new ShooterCommand(m_shootingSubsystem, m_Intake, this::getLookupShotRPM, Constants.ShooterConstants.KickerSpeed);
     m_xBoxDriver.rightTrigger().whileTrue(lookupShotCommand);
+
+    Command alignToHub = new AlignToHubCommand(m_swerve, m_Limelight);
+    Command alignmentRumble = Commands.startEnd(
+        () -> m_xBoxDriver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 1.0),
+        () -> m_xBoxDriver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 0.0))
+        .withTimeout(0.3);
+
+    m_xBoxDriver.rightBumper().onTrue(alignToHub.andThen(alignmentRumble));
 
    Command highIntake = new IntakeCommand(m_Intake,m_shootingSubsystem,Constants.IntakeConstants.kIntakeHighSpeed,Constants.ShooterConstants.KickerIntakeSpeed);
    

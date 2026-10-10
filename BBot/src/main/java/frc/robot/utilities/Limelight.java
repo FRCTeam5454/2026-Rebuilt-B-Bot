@@ -209,6 +209,14 @@ public class Limelight {
         return this.tv.get()==1.0;
     }
 
+    public boolean hasAprilTagTarget() {
+        return isAnyTargetAvailable() && rawfiducials.get().length >= 7;
+    }
+
+    public double getAprilTagHorizontalOffset() {
+        return tx.get();
+    }
+
     public double getYawOfAprilTag(){
         return (this.targetpose_robotspace.get()!=null&&this.targetpose_robotspace.get().length!=0)?
                 this.targetpose_robotspace.get()[4]:0.0;
