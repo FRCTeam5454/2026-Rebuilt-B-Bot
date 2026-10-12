@@ -21,10 +21,12 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import java.util.List;
+import java.util.Optional;
 
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -108,7 +110,13 @@ public class RobotContainer {
         () -> m_xBoxDriver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 0.0))
         .withTimeout(0.3);
 
-    m_xBoxDriver.rightBumper().onTrue(alignToHub.andThen(alignmentRumble));
+    // Timeout so a missing tag (or never settling in tolerance) can't hold the drivetrain and
+    // lock the driver out. Rumble only when it actually lined up, not when it timed out.
+    m_xBoxDriver.rightBumper().onTrue(
+        alignToHub.withTimeout(Constants.LimelightConstants.kHubAlignTimeoutSeconds)
+            .andThen(alignmentRumble.onlyIf(() -> m_Limelight.hasAprilTagTarget()
+                && Math.abs(m_Limelight.getAprilTagHorizontalOffset())
+                    <= Constants.LimelightConstants.kHubAlignToleranceDegrees)));
 
    Command highIntake = new IntakeCommand(m_Intake,m_shootingSubsystem,Constants.IntakeConstants.kIntakeHighSpeed,Constants.ShooterConstants.KickerIntakeSpeed);
    
@@ -194,6 +202,9 @@ public class RobotContainer {
     // An auto can leave the intake on (IntakeOn). Phoenix 6 keeps re-sending a motor's last
     // request, so without this the intake would start up again when teleop enables.
     m_Intake.intakeMotorStop();
+    // Shots end by priming the flywheel at ShooterPrimeRPM, and the SPARK MAX holds its last
+    // setpoint, so stop it here or it spins back up as soon as the robot is enabled.
+    m_shootingSubsystem.stopShooter();
   }
 
   public void DisabledPeriodic(){
@@ -213,7 +224,29 @@ public class RobotContainer {
   }
 
   public void AllPeriodic()
-  {refreshSmartDashboard();}    
+  {
+    updateHubTagFilter();
+    refreshSmartDashboard();
+  }
+
+  // Alliance the Limelight hub-tag filter was last set for (empty = no filter set yet)
+  private Optional<Alliance> m_hubFilterAlliance = Optional.empty();
+
+  /**
+   * Restricts the Limelight to our own alliance's hub AprilTags, so AlignToHub and the lookup shot
+   * distance only ever use the hub. Re-applied whenever the DS/FMS alliance changes; until the
+   * alliance is known, no filter is set and any tag is used.
+   */
+  private void updateHubTagFilter() {
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+    if (alliance.isEmpty() || alliance.equals(m_hubFilterAlliance)) {
+      return;
+    }
+    m_Limelight.setLimelightIDFilter(alliance.get() == Alliance.Red
+        ? Constants.LimelightConstants.kRedHubTagIds
+        : Constants.LimelightConstants.kBlueHubTagIds);
+    m_hubFilterAlliance = alliance;
+  }
   
 
   private void resetDefaultCommand(){

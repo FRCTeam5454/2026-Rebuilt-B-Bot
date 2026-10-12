@@ -104,8 +104,10 @@ public class ShootingSubsystem extends SubsystemBase {
     m_kicker.stopMotor();
   }
 
+  /** Idles the flywheel at ShooterPrimeRPM between shots so the next spin-up is shorter. */
   public void primeShooter() {
     double targetRPM = Constants.ShooterConstants.ShooterPrimeRPM;
+    m_targetRPM = targetRPM; // keep the dashboard target / AtSpeed in step with what's commanded
     m_shooterPID.setSetpoint(targetRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
     m_kicker.stopMotor();
   }
@@ -126,5 +128,8 @@ public class ShootingSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Shooter/RPM", getShooterRPM());
     SmartDashboard.putNumber("Shooter/TargetRPM", m_targetRPM);
     SmartDashboard.putBoolean("Shooter/AtSpeed", isAtTargetRPM());
+    // Replaces the old every-loop console print: positive = OVER target, negative = UNDER
+    SmartDashboard.putNumber("Shooter/RPMError", getShooterRPM() - m_targetRPM);
+    SmartDashboard.putNumber("Shooter/KickerOutput", m_kicker.get());
   }
 }

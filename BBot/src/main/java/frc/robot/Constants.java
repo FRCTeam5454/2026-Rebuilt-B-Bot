@@ -55,6 +55,14 @@ public final class Constants {
     public static final double kHubAlignD = 0.001;
     public static final double kHubAlignMaxRotation = 0.35;
     public static final double kHubAlignToleranceDegrees = 1.5;
+    // Max time AlignToHub can hold the drivetrain (no tag / never settles) before giving the
+    // driver control back.
+    public static final double kHubAlignTimeoutSeconds = 1.5;
+    // Hub AprilTag IDs from the 2026 REBUILT field layout (WPILib 2026-rebuilt-welded.json):
+    // the tags mounted at 44.25 in. The Limelight is filtered to your own alliance's hub so
+    // aiming and shot distance never lock onto another tag.
+    public static final double[] kRedHubTagIds  = {2, 3, 4, 5, 8, 9, 10, 11};
+    public static final double[] kBlueHubTagIds = {18, 19, 20, 21, 24, 25, 26, 27};
   }  
    public static final class LimeLightValues {
     
@@ -94,7 +102,10 @@ public final class Constants {
     public static final double ShooterTargetRPM = 4500.0;
     public static final double ShooterPrimeRPM = 3000.0;
 
-    public static final double ShooterRPMTolerance = 100.0; // should be 150
+    // Kicker only feeds within this band of the target. Keep it tight (the lookup table steps are
+    // ~50 RPM); if the flywheel won't settle inside it, tune kShooterP/kShooterFF instead of
+    // widening this - at 500 the kicker was feeding at 4000 RPM for a 4500 shot.
+    public static final double ShooterRPMTolerance = 150.0;
     // Run times for the ScoreHopper PathPlanner named commands (seconds, includes spin-up)
     public static final double kShootQuickSeconds = 3.0;
     public static final double kShootLongSeconds = 7.0;

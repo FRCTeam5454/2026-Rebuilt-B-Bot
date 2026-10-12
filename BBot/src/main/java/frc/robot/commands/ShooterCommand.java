@@ -45,7 +45,8 @@ public class ShooterCommand extends Command {
     m_rpmSupplier = rpmSupplier;
     m_kickerspeed = kickerspeed;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    // The intake is driven here too, so require it so nothing else fights over it mid-shot.
+    addRequirements(subsystem, intake);
   }
 
   // Called when the command is initially scheduled.
@@ -64,11 +65,9 @@ public class ShooterCommand extends Command {
   public void execute() {
     m_rpm = m_rpmSupplier.getAsDouble();
     m_intake.runIntake(Constants.IntakeConstants.kIntakeHighSpeed);
-    double shooterRPM = m_subsystem.getShooterRPM();
+    // Shooter RPM, target, error and kicker output are on the dashboard under "Shooter/"
+    // (published by ShootingSubsystem.periodic) - no console printing every loop.
     double kicker = m_subsystem.isAtTargetRPM() ? m_kickerspeed : 0.0;
-    String rpmStatus = shooterRPM > m_rpm ? "OVER TARGET" : "UNDER TARGET";
-    System.out.println("Kicker Speed: " + kicker + " Shooter RPM: " + shooterRPM
-        + " Target RPM: " + m_rpm + " (" + rpmStatus + ")");
     // Re-send whenever the kicker output changes, so the kicker pauses while the flywheel
     // recovers below tolerance after a shot and resumes once it's back at speed.
     if((m_rpm!=m_oldrpm) || (kicker!=m_oldkickerspeed)) {
