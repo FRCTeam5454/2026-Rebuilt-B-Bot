@@ -55,6 +55,7 @@ public final class Constants {
     public static final double kHubAlignD = 0.001;
     public static final double kHubAlignMaxRotation = 0.35;
     public static final double kHubAlignToleranceDegrees = 1.5;
+<<<<<<< HEAD
     // Max time AlignToHub can hold the drivetrain (no tag / never settles) before giving the
     // driver control back.
     public static final double kHubAlignTimeoutSeconds = 1.5;
@@ -63,6 +64,10 @@ public final class Constants {
     // aiming and shot distance never lock onto another tag.
     public static final double[] kRedHubTagIds  = {2, 3, 4, 5, 8, 9, 10, 11};
     public static final double[] kBlueHubTagIds = {18, 19, 20, 21, 24, 25, 26, 27};
+=======
+    // Seconds without seeing a tag before auto-align gives control back to the driver
+    public static final double kHubAlignNoTargetTimeout = 0.25;
+>>>>>>> c32c382b13ab5559def86b4b0780abc2c1a9ea0c
   }  
    public static final class LimeLightValues {
     
