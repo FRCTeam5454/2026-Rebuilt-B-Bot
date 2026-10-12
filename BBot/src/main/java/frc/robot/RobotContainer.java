@@ -110,18 +110,9 @@ public class RobotContainer {
         () -> m_xBoxDriver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 0.0))
         .withTimeout(0.3);
 
-<<<<<<< HEAD
-    // Timeout so a missing tag (or never settling in tolerance) can't hold the drivetrain and
-    // lock the driver out. Rumble only when it actually lined up, not when it timed out.
-    m_xBoxDriver.rightBumper().onTrue(
-        alignToHub.withTimeout(Constants.LimelightConstants.kHubAlignTimeoutSeconds)
-            .andThen(alignmentRumble.onlyIf(() -> m_Limelight.hasAprilTagTarget()
-                && Math.abs(m_Limelight.getAprilTagHorizontalOffset())
-                    <= Constants.LimelightConstants.kHubAlignToleranceDegrees)));
-=======
+
     // whileTrue: releasing the bumper always hands the drivetrain back to the driver
     m_xBoxDriver.rightBumper().whileTrue(alignToHub.andThen(alignmentRumble.onlyIf(alignToHub::isAligned)));
->>>>>>> c32c382b13ab5559def86b4b0780abc2c1a9ea0c
 
    Command highIntake = new IntakeCommand(m_Intake,m_shootingSubsystem,Constants.IntakeConstants.kIntakeHighSpeed,Constants.ShooterConstants.KickerIntakeSpeed);
    
